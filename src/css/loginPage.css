@@ -1,0 +1,64 @@
+
+.parDiv{
+    background: url('../assets/loginBackground.jpg');
+    background-size:cover;
+
+    margin:'0';
+    padding:'0';
+}
+
+.loginPagebody{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+.xxx{
+    background:rgba(255,255,255,0.15);
+    box-shadow:0 8px 32px 0 rgba(31,38,135,0.37);
+    border-radius:2rem;
+    height:500rem;
+    width:80%;
+    padding:1rem;
+    border:none;
+    outline:none;
+    color:#3c3540;
+    font-size:1rem;
+    font-weight:bold;
+}
+.xxx:focus{
+        display:inline-block;
+        box-shadow:0 0 0 0.2rem #b9abe0;
+        background-filter:blur(12rem);
+        border-radius:2rem;
+    }
+.xxx::placeholder{
+        color:inherit;
+        font-weight:100;
+        font-size:1rem;
+}
+.emailSpan , .passSpan , .phoneSpan , .citySpan , .usernameSpan , .failedSpan {
+    padding:'3xp' ;
+    color: rgb(253, 1, 1);
+    font-size:'12px' ;
+}
+.failedSpan {
+    padding:'1xp' ;
+    color: rgb(253, 0, 0);
+    font-size:'12px' ;
+    display:flex;
+    position: static;   
+}
+#email:invalid ~.emailSpan{
+    display: flex;
+}
+#pass:invalid ~.passSpan{
+    display:flex;
+}
+#username:invalid ~.usernameSpan{
+    display: flex;
+}
+#phone:invalid ~.phoneSpan{
+    display: flex;
+}

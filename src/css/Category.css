@@ -1,0 +1,59 @@
+.card{
+
+
+
+}
+
+.main{
+    min-height: calc(100vh - 4rem);
+}
+.ddd{
+    height: 4rem;
+}
+.footer {
+   
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+.appBar{
+    background-color: rgba(0, 0, 0,0.7);
+}
+.card:hover{
+    box-shadow:5px 10px 20px 1px rgba(0,0,0,0.5);
+    transform: scale(1.1);
+    transition: transform .3;
+    outline: 0;
+    background-color: #b9b9b9;
+    border-color: rgba(190, 176, 176, 0.19);
+
+}
+html {
+    position: static;
+    height: 100%;
+}
+.bdy{ 
+    
+    
+    background: url('../assets/bk-category.jpg') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
+  }
+
+.cardContent{
+    height: 50px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.0);
+}
+.catName{
+    color: black;
+    margin:.1px;
+    text-align:center;
+    text-decoration:inherit ;
+    
+}
