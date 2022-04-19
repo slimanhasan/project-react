@@ -15,10 +15,6 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import useToken from "./service/useToken";
 import useUsername from "./service/useUsername";
-import { Dropdown } from "react-bootstrap";
-import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
-import DropdownItem from "react-bootstrap/esm/DropdownItem";
-import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
 const imageApi = "http://localhost:8080/getCategoryImage?id=";
 const API_URL = "http://localhost:8080/getCategories";
 export default function Category() {
@@ -37,8 +33,8 @@ export default function Category() {
       )
     }, [])
 */
-  const {token,setToken}=useToken();
-  const {username,setUsername}=useUsername();
+  const { token, setToken } = useToken();
+  const { username, setUsername } = useUsername();
 
   const { status, data, error, isFetching } = useQuery("posts", async () => {
     const { data } = await axios.get(
@@ -81,20 +77,18 @@ export default function Category() {
                 <h4 style={{ color: 'white' }}>donations</h4>
               </Button>
             </Link>
-            <Link to={(token)?'/createPost':'/login'}>
-              <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)',marginRight: '10px' }}>
+            <Link to={(token) ? '/createPost' : '/login'}>
+              <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}>
                 <h4 style={{ color: 'white' }}>donate now</h4>
               </Button>
             </Link>
             {
-              (username)?(
-                
-                  <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)' }}>
-                    <h4 style={{ color: 'white' }} >{username}</h4> 
-                  </Button>
-              ):(
+              (username) ? (
+
+                showUser(username)
+              ) : (
                 <Link to='/login'>
-                  <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)',marginRight: '10px' }}>
+                  <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}>
                     <h4 style={{ color: 'white' }}>login</h4>
                   </Button>
                 </Link>
@@ -160,10 +154,22 @@ export default function Category() {
 
   );
 }
-function createDropDownList(){
- return (
-  <div>sssssssssssssssssssssssss</div>
- )
+function showUser(username) {
+  return (
+
+      <div className="dropdown" >
+        <button className="dropbtn">
+          {username}
+          <i class="arrow down"></i>  
+        </button>
+        <div className="dropdown-content">
+          <Link to="/personalPage"> personal page</Link>
+          <Link to="/myPosts"> my posts</Link>
+          <Link to="/accountSetting"> account setting</Link>
+          <Link to="/logout"> logout</Link>
+        </div>
+      </div>
+  )
 }
 function getFooter() {
 

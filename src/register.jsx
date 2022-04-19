@@ -181,7 +181,7 @@ export default function ({setToken}) {
                         </InputContainer>
                         <SignUpText>
                             Already have an account ?  
-                            <Link to="/login"style={{textDecoration:'none'}}> SIGN IN</Link>
+                            <Link to="/login"style={{textDecoration:'none' , color:'pink'}}> SIGN IN</Link>
                         </SignUpText>
                     </MainContainer>
                 </div>

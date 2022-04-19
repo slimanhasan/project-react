@@ -83,10 +83,12 @@ export default function ({setToken}) {
                                 <MyButton content="sign in"></MyButton>
                             </ButtonContainer>
                         </InputContainer>
-                        <ForgotPassword> forgot password ?</ForgotPassword>
+                        <ForgotPassword> 
+                            <Link to="/forgotPassword" style={{textDecoration:'none',color:'pink' }}> forgot password ?</Link>
+                        </ForgotPassword>
                         <SignUpText>
                             don't have an account ?
-                            <Link to="/register" style={{textDecoration:'none' }}> sign up now</Link>
+                            <Link to="/register" style={{textDecoration:'none',color:'pink' }}> sign up now</Link>
                         </SignUpText>
                     </MainContainer>
                 </div>
@@ -127,7 +129,7 @@ const InputContainer = styled.form`
     flex-direction:column;
     justify-content:space-around;
     align-items:center;
-    height:50%;
+    height:45%;
     width:100%;
 
 `;
