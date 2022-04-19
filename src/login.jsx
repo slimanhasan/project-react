@@ -8,6 +8,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import useToken from './service/useToken';
 async function loginUser(credentials){
     console.log(credentials.email + " " + credentials.pass);
     
@@ -23,6 +24,10 @@ async function loginUser(credentials){
 
 
 export default function ({setToken}) {
+    const {token,set}=useToken();
+    if(token){
+        window.location.href="/";
+    }
     const [email,setEmail] = useState();
     const [pass,setPass] = useState();
     const [failed,setFailed]=useState("");
@@ -31,15 +36,16 @@ export default function ({setToken}) {
         setFailed("");
         const response = await loginUser({email,pass});
         
-        console.log(response);
         if(response.token){
-            setToken(response.token);
+            setToken(response.token,response.username);
             window.location.href="/createPost";
         }
+        
         else{
             setFailed("invalid email or password");
             console.log("failed  = " +failed);
         }
+        
     }
 
     return (

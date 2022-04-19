@@ -9,16 +9,9 @@ export default function(){
         );
         return data;
       });
-    if(isFetching){
-        return (<div>loading</div>)
-    }
+    
     return (
         <>
-            <div>
-                {
-                    isFetching
-                }
-            </div>
         </>
     )
 

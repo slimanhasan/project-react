@@ -11,9 +11,11 @@ import CreatePost from './CreatePost'
 import useToken from './service/useToken'
 import {QueryClientProvider,QueryClient} from 'react-query'
 import Temp from './temp';
-function setToken(userToken){
+function setToken(userToken,username){
     console.log("user token = " + userToken)
     localStorage.setItem('token', JSON.stringify(userToken));
+    localStorage.setItem('username', JSON.stringify(username));
+
 }
 function App() {
   const {token,set}=useToken();
@@ -24,7 +26,7 @@ function App() {
         <BrowserRouter>
             <Routes>
               <Route path='/createPost' element={<CreatePost/>}></Route>
-              <Route path="/login" element={ !token ?(<Login setToken={setToken}/>):(<Category/>) } />
+              <Route path="/login" element={<Login setToken={setToken}/>} />
               <Route path="/" element={ <Category/> } />
               <Route path="/Category/:name" element={ <Products/> } />
               <Route path="Details" element={ <Details/> } />

@@ -8,31 +8,12 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link } from 'react-router-dom';
-
-
-async function registerUser(credentials,img){
-    var ok=1;
- 
-    fetch("http://localhost:8080/registerUser",{
-        method:'post',
-        headers:{
-            'Content-type':'application/json'
-        },
-        body:JSON.stringify(credentials),
-        
-
-    }).then(res=>{
-        if(res.status==400){
-            console.log("SS");
-            ok=0;
-        }
-    })
-    
-    console.log("ok = " + ok);
-   
-}
+import useToken from './service/useToken';
 export default function ({setToken}) {
-
+    const {token,set}=useToken();
+    if(token){
+        window.location.href="/";
+    }
     const [emailErrMsg,setEmailErrMsg]=useState("");
     const [passwordErrMsg,setpasswordErrMsg]=useState("");
     const [usernameErrMsg,setusernameErrMsg]=useState("");
@@ -133,8 +114,8 @@ export default function ({setToken}) {
                 
                 body:formdata
             })
-            
         }
+        window.location.href="/createPost"
 
     
 
