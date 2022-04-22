@@ -46,9 +46,10 @@
 .failedSpan {
     padding:'1xp' ;
     color: rgb(253, 0, 0);
-    font-size:'12px' ;
+    font-size:17px ;
     display:flex;
     position: static;   
+    margin-bottom: auto;
 }
 #email:invalid ~.emailSpan{
     display: flex;
@@ -62,3 +63,55 @@
 #phone:invalid ~.phoneSpan{
     display: flex;
 }
+.MainContainer{
+    display:flex;
+    align-items:center;
+    flex-direction:column;
+    height:70%;
+    width:30vw;
+    background:rgba(0,0,0,0.4);
+    box-shadow:0 8px 32px 0 rgba(31,38,135,0.37);
+    background-filter:blur(8.5px);
+    border-radius:10px; 
+    color:white;
+    letter-spacing:0.2rem
+}
+.WelcomeText{
+    margin : 1rem 0 2rem 0;
+}
+.SignUpText{
+    cursor:pointer;
+}
+.ForgotPassword{
+    cursor:pointer;
+}
+.InputContainer{
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    align-items:center;
+    height:45%;
+    width:100%;
+}
+.ButtonContainer{
+    margin: 1rem 10 2rem 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.styledBtn{
+    background: linear-gradient(to right, #14163c 0%, #03217b 55%);
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    width: 65%;
+    height: 3rem;
+    border: none;
+    color: white;
+    border-radius: 2rem;
+    cursor: pointer;
+    
+}
+.styledBtn:hover{
+    transform: scale(1.1);
+  }

@@ -47,8 +47,9 @@ export default function Category() {
   });
   if (isFetching) {
     return (
-      <div>
-        loading...
+      <div className="loading">
+
+        <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       </div>
     )
   }
@@ -119,9 +120,7 @@ export default function Category() {
                     borderRadius: '20px'
 
                   }}>
-                    {
-                      console.log()
-                    }
+                    
                     <a href={`/Category/${item.name}`} style={{ textDecoration: 'none' }}>
 
 
@@ -155,6 +154,10 @@ export default function Category() {
   );
 }
 function showUser(username) {
+  const logout=()=>{
+    localStorage.clear();
+    window.location.reload();
+  }
   return (
 
       <div className="dropdown" >
@@ -165,8 +168,7 @@ function showUser(username) {
         <div className="dropdown-content">
           <Link to="/personalPage"> personal page</Link>
           <Link to="/myPosts"> my posts</Link>
-          <Link to="/accountSetting"> account setting</Link>
-          <Link to="/logout"> logout</Link>
+          <Link to="/" onClick={logout}> logout</Link>
         </div>
       </div>
   )
