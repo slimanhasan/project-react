@@ -38,8 +38,9 @@
         font-size:1rem;
 }
 .custom-file-input::-webkit-file-upload-button {
-    visibility: hidden;
-  }
+    display: none;
+    left: 0px;
+}
 .custom-file-input:hover{
     box-shadow:0 0 0 0.2rem #b9abe0;
     cursor: pointer;

@@ -73,7 +73,7 @@ export default function ({setToken}) {
                     <div className='MainContainer'>
                         <h2 className='WelcomeText'> glad to see you again ! </h2>
                         <form className='InputContainer' onSubmit={handleSubmit} id="loginForm" >
-                            <input onChange={(e)=> setEmail(e.target.value)} className='xxx' type="email" placeholder="Email" autoFocus='on'/>
+                            <input onChange={(e)=> setEmail(e.target.value)} className='xxx' type="email" placeholder="Email"/>
                             <input onChange={(e)=> setPass(e.target.value)} className='xxx' type="password" placeholder="Password" />
                             { failed && (
                                  <span className='failedSpan'>{failed}</span>

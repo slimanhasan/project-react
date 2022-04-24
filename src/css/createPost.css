@@ -1,7 +1,9 @@
 .createPostParDiv{
-    
-    background: url('../assets/createPostBG.jpg');
-    background-size:cover;
+    background: url('../assets/createPostBG.jpg')no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 .createPostBody{
     height: 100vh;
@@ -55,6 +57,9 @@
     font-size:1rem;
     font-weight:bold;
 }
+.createPostInputFields:hover{
+    box-shadow:0 0 0 0.2rem #b9abe0;
+}
 .createPostInputFields:focus{
     display:inline-block;
     box-shadow:0 0 0 0.2rem #b9abe0;
@@ -90,9 +95,7 @@
 .createPostCustomFileInput:hover {
     box-shadow:0 0 0 0.2rem #b9abe0;
   }
-  .custom-file-input:active::before {
-    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
-  }
+  
 .createPostRegisterButtonContainer{
     margin-top: 30px;
     margin-left: 50px;

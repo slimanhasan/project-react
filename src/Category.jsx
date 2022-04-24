@@ -153,7 +153,7 @@ export default function Category() {
 }
 function showUser(username) {
   const logout=()=>{
-    localStorage.clear();
+    sessionStorage.clear();
     window.location.reload();
   }
   return (
