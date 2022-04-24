@@ -1,0 +1,223 @@
+.createPostParDiv{
+    
+    background: url('../assets/createPostBG.jpg');
+    background-size:cover;
+}
+.createPostBody{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.thankfulH1{
+    letter-spacing:0.2rem;
+    text-transform:uppercase;
+    margin-bottom: auto;
+}
+.createPostMainContainer{
+    display:flex;
+    align-items:center;
+    flex-direction:column;
+    height:92%;
+    width:60vw;
+    background:rgba(255, 255, 255, 0.7);
+    box-shadow:0 8px 32px 0 rgba(31,38,135,0.37);
+    background-filter:blur(8.5px);
+    border-radius:10px; 
+    color:rgb(87, 145, 105);
+    letter-spacing:0.2rem;
+    overflow: auto;
+}
+.createPostInputContainer{
+    float: left;
+    left: -231px;
+    display:flex;
+    position: relative;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:flex-start;
+    height:90%;
+    width:50%;
+}
+.createPostInputFields{
+    margin-left:50px ;
+    margin-top: 30px;
+    background:rgba(255,255,255,0.15);
+    box-shadow:0 8px 32px 0 rgba(31,38,135,0.37);
+    border-radius:2rem;
+    height:4rem;
+    width:60%;
+    padding:1rem;
+    border:none;
+    outline:none;
+    color:#3c3540;
+    font-size:1rem;
+    font-weight:bold;
+}
+.createPostInputFields:focus{
+    display:inline-block;
+    box-shadow:0 0 0 0.2rem #b9abe0;
+    background-filter:blur(12rem);
+    border-radius:2rem;
+}
+.createPostSelect::-ms-expand{
+    display: inline-block;
+    
+}
+.createPostCustomFileInput{
+    color: transparent;
+}
+.createPostCustomFileInput::-webkit-file-upload-button{
+    visibility: hidden;
+}
+.createPostCustomFileInput::before{
+    content: 'attach photos (max 3)';
+    display: block ;
+    background: linear-gradient(top, #f9f9f9, #e3e3e3);
+    color: black;
+    padding: 12px 10px ;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 15px;
+    
+    
+}
+.createPostCustomFileInput:hover {
+    box-shadow:0 0 0 0.2rem #b9abe0;
+  }
+  .custom-file-input:active::before {
+    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+  }
+.createPostRegisterButtonContainer{
+    margin-top: 30px;
+    margin-left: 50px;
+    width: 30%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: static;
+}
+.createPostRegisterButton{
+    background: linear-gradient(to right, #7bc46c 0%, #509b67 55%);
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    width: 100%;
+    height: 3rem;
+    border: none;
+    color: white;
+    border-radius: 2rem;
+    cursor: pointer;
+    position: static;
+}
+.createPostRegisterButton:active {
+    box-shadow: 0px 0px 12px 0px rgb(50, 173, 45);
+}
+.createPostRegisterButton:focus {
+  outline: 0;  
+}
+.createPostRegisterButton:hover{
+box-shadow: 0px 0px 12px 0px rgb(53, 146, 37);
+}
+.imagesUploaded{
+    position: absolute;
+    display: flex;
+    margin-right: -450px;
+    margin-top: 49px;
+    align-content: space-around;
+    justify-content: center;
+    align-items: center;
+    height:79%;
+    width: 28%;
+    flex-direction:column;
+}
+.image{
+    display: flex;
+    flex-direction:column;
+    height: 30%;
+    width: 100%;
+    margin-top: 30px;
+    border: 2px solid gray;
+    border-radius: 10%;
+    border-style: dashed;
+}
+.firstImage{
+    position: static;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 10%;
+    transition: transform .3s;
+}
+.firstImage:hover{
+    box-shadow:5px 10px 20px 1px rgba(0,0,0,0.5);
+    transform: scale(1.1);
+    transition: transform 3;
+    outline: 0;
+    background-color: #b9b9b9;
+    border-color: rgba(190, 176, 176, 0.19);
+}
+.secondImage{
+    position: static;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-size: contain;
+    border-radius: 10%;
+    transition: transform .3s;
+    
+}
+.secondImage:hover{
+    box-shadow:5px 10px 20px 1px rgba(0,0,0,0.5);
+    transform: scale(1.1);
+    transition: transform 3;
+    outline: 0;
+    background-color: #b9b9b9;
+    border-color: rgba(190, 176, 176, 0.19);
+}
+.thirdImage{
+    position: static;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 10%;
+    transition: transform .3s;
+    
+}
+.thirdImage:hover{
+    box-shadow:5px 10px 20px 1px rgba(0,0,0,0.5);
+    transform: scale(1.1);
+    transition: transform 3;
+    outline: 0;
+    background-color: #b9b9b9;
+    border-color: rgba(190, 176, 176, 0.19);
+}
+.noChosenFile{
+    color: black;
+    margin-top: 20%;
+    margin-left: 25%;
+}
+.clearImg{
+    text-align: center;
+    position: relative;
+    margin-top: 3px;
+    color:red;
+    font-size: large;
+    cursor: pointer;
+}
+.titleError{
+    padding:'3xp' ;
+    color: rgb(253, 1, 1);
+    font-size:'12px';
+    margin-left: 60px;
+}

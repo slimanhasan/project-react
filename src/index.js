@@ -13,8 +13,8 @@ import {QueryClientProvider,QueryClient} from 'react-query'
 import Temp from './temp';
 function setToken(userToken,username){
     console.log("user token = " + userToken)
-    localStorage.setItem('token', JSON.stringify(userToken));
-    localStorage.setItem('username', JSON.stringify(username));
+    sessionStorage.setItem('token', JSON.stringify(userToken));
+    sessionStorage.setItem('username', JSON.stringify(username));
 
 }
 function App() {

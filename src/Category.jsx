@@ -37,9 +37,7 @@ export default function Category() {
   const { username, setUsername } = useUsername();
 
   const { status, data, error, isFetching } = useQuery("posts", async () => {
-    const { data } = await axios.get(
-      "http://localhost:8080/getCategories"
-    );
+    const { data } = await axios.get(API_URL);
     return data;
   }, {
     refetchOnMount: false,
