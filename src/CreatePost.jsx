@@ -14,9 +14,8 @@ import useUsername from "./service/useUsername";
 export default function () {
     const { token, setToken } = useToken();
     const { username, setUsername } = useUsername();
-
+    const [fetching, setFetching] = useState(false);
     if (!token) {
-        alert("SSS");
         return (window.location.href = "/login")
     }
     const { status, data, error, isFetching } = useQuery("getCategories", async () => {
@@ -101,7 +100,7 @@ export default function () {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (title.length < 1) {
+        if (title.length < 3) {
             setTitleError("title must be at least 3 characters");
             return;
         }
@@ -116,6 +115,7 @@ export default function () {
         if (!photo1 && !photo2 && !photo3) {
             setImageError("please attach at least one photo");
         }
+        setFetching(true);
         const formdata = new FormData();
         formdata.append('title', title);
 
@@ -129,8 +129,15 @@ export default function () {
                 Authorization: `Bearer ${token}`
             }
         })
-        alert(returnStatus.status);
+        
+        setTimeout(()=>{
+            setFetching(false);
+            window.location.replace("/")
+        },10000);
 
+
+
+    
     }
     if (isFetching) {
         return (
@@ -141,19 +148,19 @@ export default function () {
         )
     }
     else {
-
+        
         return (
             <CssBaseline>
                 <div className='createPostParDiv'>
                     <AppBar position="static"
                         style={{ background: 'rgba(0,0,0,0.7)' }}
-                    >
+                        >
                         <Toolbar >
 
                             <Typography variant="h5"
                                 component="div" sx={{ padding: 3, flexGrow: 1 }}
 
-                            >
+                                >
                                 WebSite Name
                             </Typography>
                             <Link to="/home">
@@ -175,6 +182,12 @@ export default function () {
                         </Toolbar>
                     </AppBar>
                     <div className='createPostBody'>
+                            {
+                                    (fetching) ? (
+                
+                                            <div className="createPostlds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                    ) : (<></>)
+                                }
                         <div className='createPostMainContainer'>
                             <h2 className='thankfulH1'> we are thankful for your help</h2>
                             <form className='createPostInputContainer' onSubmit={handleSubmit} encType='multipart/form-data'>
@@ -189,7 +202,7 @@ export default function () {
                                 {(descriptionError) ? (<span className='titleError'>{descriptionError}</span>) : (<></>)}
 
                                 <select className='createPostInputFields createPostSelect'
-                                    id="categorySelect"
+                                    id="categorySelect" onChange={(e) => setCategoryError("")}
                                 >
                                     <option disabled='on' selected="on" >
                                         select category
@@ -213,6 +226,7 @@ export default function () {
                                 </div>
 
                             </form>
+
                             <div className='imagesUploaded' >
                                 <div className='image' id="image1">
                                     {
@@ -282,7 +296,7 @@ function showUser(username) {
         <div className="dropdown" >
             <button className="dropbtn">
                 {username}
-                <i class="arrow down"></i>
+                <i className="arrow down"></i>
             </button>
             <div className="dropdown-content">
                 <Link to="/personalPage"> personal page</Link>
