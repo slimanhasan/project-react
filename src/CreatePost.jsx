@@ -129,15 +129,15 @@ export default function () {
                 Authorization: `Bearer ${token}`
             }
         })
-        
-        setTimeout(()=>{
+
+        setTimeout(() => {
             setFetching(false);
             window.location.replace("/")
-        },10000);
+        }, 10000);
 
 
 
-    
+
     }
     if (isFetching) {
         return (
@@ -148,19 +148,19 @@ export default function () {
         )
     }
     else {
-        
+
         return (
             <CssBaseline>
                 <div className='createPostParDiv'>
                     <AppBar position="static"
                         style={{ background: 'rgba(0,0,0,0.7)' }}
-                        >
+                    >
                         <Toolbar >
 
                             <Typography variant="h5"
                                 component="div" sx={{ padding: 3, flexGrow: 1 }}
 
-                                >
+                            >
                                 WebSite Name
                             </Typography>
                             <Link to="/home">
@@ -182,12 +182,12 @@ export default function () {
                         </Toolbar>
                     </AppBar>
                     <div className='createPostBody'>
-                            {
-                                    (fetching) ? (
-                
-                                            <div className="createPostlds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                                    ) : (<></>)
-                                }
+                        {
+                            (fetching) ? (
+
+                                <div className="createPostlds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                            ) : (<></>)
+                        }
                         <div className='createPostMainContainer'>
                             <h2 className='thankfulH1'> we are thankful for your help</h2>
                             <form className='createPostInputContainer' onSubmit={handleSubmit} encType='multipart/form-data'>
