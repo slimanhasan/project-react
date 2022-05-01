@@ -31,6 +31,9 @@ const API_URL = "http://localhost:8080/getItems/";
 
 const images = [];
 export default function () {
+  let url = window.location.href;
+  const curCategory = url.substring(url.lastIndexOf('/') + 1);
+
   const { token, setToken } = useToken();
   const { username, setUsername } = useUsername();
   const [images, setImages] = useState([]);
@@ -40,6 +43,9 @@ export default function () {
   const [postLocation, setPostLocation] = useState();
   const [postDescription, setPostDescription] = useState();
   const [fetchingOnRight, setFetchingOnRight] = useState(true);
+  const [noSuchElement, setNoSuchElement] = useState(false);
+  const [searchWord, setSearchWord] = useState("");
+  const [searchError, setSearchError] = useState();
   const { status, posts, error, isFetching } = useQuery("getPosts", async () => {
     const catName = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
     const { data } = await axios.get(API_URL + catName);
@@ -75,9 +81,7 @@ export default function () {
       </div>
     )
   }
-  else if (data && data.length == 0) {
-    return (<div style={{ marginTop: '25%', marginLeft: '45%' }}>  no items in this Category</div>)
-  }
+
   else {
 
     return (
@@ -131,48 +135,74 @@ export default function () {
           <div className="tools">
 
             <div style={{
-              position: 'relative',
               backgroundColor: 'rgba(0,0,0,0.1)',
-              border:'1px solid black',
-              '&:hover': {
-                backgroundColor: 'rgba(255,255,255,0.7)',
-              },
-              marginTop:'1px',
+              border: '1px solid black',
+              display: 'flex',
+              marginTop: '2px',
               marginLeft: '40%',
               width: '20%',
 
-            }}>
+            }}
+            >
               <div style={{
-                height: '100%',
                 position: 'absolute',
-                pointerEvents: 'none',
-                display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-              }}>
-                <SearchIcon />
+              }}
+              >
+
               </div>
+              
               <InputBase
+                style={{ width: '100%',marginLeft:'10px' }}
                 placeholder="Search..."
-                style={{
-                  color: 'inherit',
-                  // vertical padding + font size from searchIcon
-                  paddingLeft:'calc(1em + 4px)',
-                  width: '100%',
-                    '&:focus': {
-                      width: '20ch',
+                inputProps={{ 'aria-label': 'search' }}
+                value={searchWord}
+                onChange={async (e) => {
+                  setSearchWord(e.target.value)
+                  console.log(e.target.value);
+                  if (e.target.value.length == 0) {
+                    setNoSuchElement(false);
+                    setData(posts);
                   }
+                  const newData = await axios.get("http://localhost:8080/getItems/" + curCategory + "?q=" + e.target.value);
+                  if (newData.data.length > 0) {
+
+                    setData(newData.data);
+                    handleChangeRightData(newData.data[0])
+                  }
+                  else {
+                    setData([]);
+                    handleChangeRightData(null);
+                    setNoSuchElement(true);
+                    setPostUserEmail("");
+                    setPostLocation("");
+                    setPostDescription("");
+                    setPostUserPhone("");
+
+                  }
+
                 }}
-                inputProps={{ 'aria-label': 'search ' }}
+
               />
+              {
+                (searchError) ? (
+                  <span className="searchError">{searchError}</span>
+                ) : (<></>)
+
+              }
             </div>
           </div>
 
-
-
           <div className="leftDiv">
             {
-              (fetchingOnRight) ? (
+              (noSuchElement) ? (
+
+                <span style={{ marginLeft: '40%', fontSize: '15px', height: '100%', marginTop: '50%', color: 'red' }}>no such element</span>
+              ) : <></>
+            }
+            {
+              (fetchingOnRight && !noSuchElement) ? (
                 <div className="loading">
 
                   <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
@@ -192,6 +222,7 @@ export default function () {
                 overflow: 'hidden',
                 overflowY: 'scroll',
               }}>
+
                 {
                   (data) ? (
                     data.map((item) =>
@@ -260,7 +291,7 @@ export default function () {
               }
 
 
-              <Box style={{ marginTop: '-20px', marginLeft: '700px', width: '20%', height: 'fit-content', position: 'absolute' }}>
+              <Box style={{ marginTop: '0px', marginLeft: '700px', width: '20%', height: 'fit-content', position: 'absolute' }}>
 
                 <Card sx={{ width: '100%', backgroundColor: '#cbddea' }}
                   style={{ boxShadow: '0 3px 5px 2px rgba(0,0,0,1)', }}>
@@ -313,7 +344,6 @@ export default function () {
 
         </div>
       </CssBaseline>
-
     )
 
   }

@@ -4,11 +4,23 @@
   background-size:cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height:100vh;
+  height: 100vh;
 }
+.searchButton{
+  height: auto;
+  width: 20%;
+  height: 100%;
+  color: black;
+  background: transparent;
+  border: none;
+}
+
 .tools{
   height: 50px;
-  border-bottom: 2px solid rosybrown;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid palevioletred;
+
 }
 .leftDiv{
   background-color: white;
@@ -67,3 +79,12 @@
   transform: scale(1.1);
     transition: transform .3s;
   }
+.searchError{
+  padding:'1xp' ;
+  color: rgb(253, 0, 0);
+  font-size:17px ;
+  position: fixed; 
+  margin-left: 60%;
+  margin-top: 10px;  
+
+}
