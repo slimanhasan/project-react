@@ -62,7 +62,7 @@
     margin : 1rem 0 2rem 0;
 }
 .registerSignUpText{
-    cursor:pointer;
+    cursor:auto;
 }
 .registerForgotPassword{
     cursor:pointer;

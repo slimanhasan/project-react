@@ -56,7 +56,7 @@ export default function Category() {
       <CssBaseline />
       <div className="bdy">
         <AppBar position="static"
-          style={{ background: 'rgba(0,0,0,0.7)' }}
+          style={{ background: 'rgba(0,0,0,0.5)' }}
         >
           <Toolbar >
 
@@ -110,6 +110,7 @@ export default function Category() {
             {
               data.map((item) =>
                 <Grid key={item.id} item xs={12} sm={6} md={3}>
+
                   <Card className="card" sx={{ width: 200 }} style={{
                     margin: 20,
                     marginLeft: 50,
@@ -118,8 +119,8 @@ export default function Category() {
                     borderRadius: '20px'
 
                   }}>
-                    
-                    <a href={`/Category/${item.name}`} style={{ textDecoration: 'none' }}>
+                    <Link to={"/Category/" + item.name} style={{ textDecoration: 'none' }}>
+
 
 
                       <CardMedia
@@ -132,7 +133,7 @@ export default function Category() {
                       <CardContent className="cardContent">
                         <h3 className="catName">{item.name}</h3>
                       </CardContent>
-                    </a>
+                    </Link>
                   </Card>
                 </Grid>
 
@@ -152,23 +153,23 @@ export default function Category() {
   );
 }
 function showUser(username) {
-  const logout=()=>{
+  const logout = () => {
     sessionStorage.clear();
     window.location.reload();
   }
   return (
 
-      <div className="dropdown" >
-        <button className="dropbtn">
-          {username}
-          <i class="arrow down"></i>  
-        </button>
-        <div className="dropdown-content">
-          <Link to="/personalPage"> personal page</Link>
-          <Link to="/myPosts"> my posts</Link>
-          <Link to="/" onClick={logout}> logout</Link>
-        </div>
+    <div className="dropdown" >
+      <button className="dropbtn">
+        {username}
+        <i class="arrow down"></i>
+      </button>
+      <div className="dropdown-content">
+        <Link to="/personalPage"> personal page</Link>
+        <Link to="/myPosts"> my posts</Link>
+        <Link to="/" onClick={logout}> logout</Link>
       </div>
+    </div>
   )
 }
 function getFooter() {

@@ -1,30 +1,69 @@
 .postsParDiv{
 
-  background-color: rgb(228, 224, 224); 
-    min-height:100vh;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+  background: url('../assets/loginBackground.jpg');
+  background-size:cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height:100vh;
 }
 .tools{
   height: 50px;
   border-bottom: 2px solid rosybrown;
 }
 .leftDiv{
+  background-color: white;
   width: 25%;
   height: 82.6vh;
   float: left;
-
 }
 .rightDiv{
-  background: rgb(226, 167, 214);
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  background: ;
+
+  background: transparent;
   width: 75%;
   margin-left: 25%;
   height: 82.6vh;
+  overflow: hidden;
 }
+.descriptionTextArea{
+  background:transparent ;
+  border:none ;
+  width:100%;
+  padding-bottom: 100px;
+  font-size:20px;
+  word-wrap: break-word;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+}
+.viewPersonalPage{
+  text-decoration:none;
+  color:blue; 
+  width: fit-content;
+  font-size:25px;
+  margin-left:10px;
+  text-align: center;
+  padding-bottom: 40px;
+}
+.leftCards{
+  background-color: white;
+  width: 100%;
+  border-bottom:1px solid black;
+  cursor: pointer;
+  overflow: auto;
+
+}
+
+.leftCards:hover{
+  background-color: #eeeeee;
+
+}
+.viewProfileLink{
+  height: 25px;
+  margin-left: 20px;
+  text-decoration: none ;
+}
+.viewProfileLink:hover{
+  transform: scale(1.1);
+    transition: transform .3s;
+  }

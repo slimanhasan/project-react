@@ -79,30 +79,32 @@ export default function ({setToken}) {
             setphoneErrMsg('invalid phone number');
             return ;
         }
+        
         setEmailErrMsg('')
         setpasswordErrMsg('')
         setcityErrMsg('')
         setphoneErrMsg('')
         setbirthDateErrMsg('')
         setusernameErrMsg('')
+    
         await fetch("http://localhost:8080/registerUser",{
             method:'post',
             headers:{
                 'Content-type':'application/json'
             },
             body:JSON.stringify(values),
-        
-
-        }).then(res=>{
+        }).then( res=>{
             if(res.status==400){
                 setEmailErrMsg("already used email");
+
             }
             else{
                 res=res.json();
+                setToken(res.token)
                 return res;
             }
-        }).then(res=> setToken(res.token))
-        if(emailErrMsg=='already used email')return 
+        });
+        if(!token)return 
         if(image){
             const formdata=new FormData();
             formdata.append("image",e.target['image'].files[0]);
@@ -122,7 +124,7 @@ export default function ({setToken}) {
         <CssBaseline >
             <div className='parDiv'>
                 <AppBar position="static"
-                    style={{ background: 'rgba(0,0,0,0.6)' }}
+                    style={{ background: 'rgba(0,0,0,0.5)' }}
                 >
                     <Toolbar >
 
@@ -179,7 +181,7 @@ export default function ({setToken}) {
                         </form>
                         <h4 className='registerSignUpText'>
                             Already have an account ?  
-                            <Link to="/login"style={{textDecoration:'none' , color:'pink'}}> SIGN IN</Link>
+                            <Link to="/login"style={{textDecoration:'none' , color:'pink' }}> SIGN IN</Link>
                         </h4>
                     </div>
                 </div>

@@ -50,7 +50,7 @@ export default function ({setToken}) {
         <CssBaseline >
             <div className='parDiv'>
                 <AppBar position="static"
-                    style={{ background: 'rgba(0,0,0,0.6)' }}
+                    style={{ background: 'rgba(0,0,0,0.5)' }}
                 >
                     <Toolbar >
 

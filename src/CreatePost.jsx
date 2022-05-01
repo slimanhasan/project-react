@@ -133,7 +133,7 @@ export default function () {
         setTimeout(() => {
             setFetching(false);
             window.location.replace("/")
-        }, 10000);
+        }, 2000);
 
 
 
@@ -153,7 +153,7 @@ export default function () {
             <CssBaseline>
                 <div className='createPostParDiv'>
                     <AppBar position="static"
-                        style={{ background: 'rgba(0,0,0,0.7)' }}
+                        style={{ background: 'rgba(0,0,0,0.5)' }}
                     >
                         <Toolbar >
 
