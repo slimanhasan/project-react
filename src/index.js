@@ -12,7 +12,6 @@ import useToken from './service/useToken'
 import {QueryClientProvider,QueryClient} from 'react-query'
 import Temp from './temp';
 function setToken(userToken,username){
-    console.log("user token = " + userToken)
     sessionStorage.setItem('token', JSON.stringify(userToken));
     sessionStorage.setItem('username', JSON.stringify(username));
 

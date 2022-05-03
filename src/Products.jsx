@@ -15,8 +15,6 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
-import { deepPurple } from '@mui/material/colors';
-import PersonIcon from '@mui/icons-material/Person';
 import ArticleIcon from '@mui/icons-material/Article';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SimpleImageSlider from "react-simple-image-slider";
@@ -24,19 +22,20 @@ import { Box } from '@mui/system';
 import { MdPhoneEnabled } from "react-icons/md";
 import { blue } from "@material-ui/core/colors";
 import { EmailRounded } from "@material-ui/icons";
-import SearchIcon from '@material-ui/icons/Search';
 import { InputBase } from "@material-ui/core";
-import { Search } from "@mui/icons-material";
+import { Select, MenuItem } from '@material-ui/core';
 const API_URL = "http://localhost:8080/getItems/";
 
 const images = [];
+const cities=['all','damascus','homs','aleppo','hama'];
 export default function () {
   let url = window.location.href;
   const curCategory = url.substring(url.lastIndexOf('/') + 1);
-
+  const [orderBy, setOrderBy] = useState("sort by");
   const { token, setToken } = useToken();
   const { username, setUsername } = useUsername();
   const [images, setImages] = useState([]);
+  const [originalData,setOriginalData]=useState();
   const [data, setData] = useState();
   const [postUserEmail, setPostUserEmail] = useState();
   const [postUserPhone, setPostUserPhone] = useState();
@@ -44,12 +43,20 @@ export default function () {
   const [postDescription, setPostDescription] = useState();
   const [fetchingOnRight, setFetchingOnRight] = useState(true);
   const [noSuchElement, setNoSuchElement] = useState(false);
+  const [searchByCity,setSearchByCity]=useState("search by city");
   const [searchWord, setSearchWord] = useState("");
-  const [searchError, setSearchError] = useState();
+  const [emptyCategory, setEmptyCategory] = useState(false);
   const { status, posts, error, isFetching } = useQuery("getPosts", async () => {
     const catName = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
     const { data } = await axios.get(API_URL + catName);
     setData(data);
+    setOriginalData(data);
+    if (data.length == 0) {
+      setEmptyCategory(true);
+      setFetchingOnRight(false);
+
+      return;
+    }
     handleChangeRightData(data[0])
     setFetchingOnRight(false);
   }, {
@@ -83,7 +90,6 @@ export default function () {
   }
 
   else {
-
     return (
 
       <CssBaseline>
@@ -139,7 +145,7 @@ export default function () {
               border: '1px solid black',
               display: 'flex',
               marginTop: '2px',
-              marginLeft: '40%',
+              marginLeft: '1%',
               width: '20%',
 
             }}
@@ -152,9 +158,9 @@ export default function () {
               >
 
               </div>
-              
+
               <InputBase
-                style={{ width: '100%',marginLeft:'10px' }}
+                style={{ width: '100%', marginLeft: '10px' }}
                 placeholder="Search..."
                 inputProps={{ 'aria-label': 'search' }}
                 value={searchWord}
@@ -185,22 +191,109 @@ export default function () {
                 }}
 
               />
-              {
-                (searchError) ? (
-                  <span className="searchError">{searchError}</span>
-                ) : (<></>)
 
-              }
             </div>
+            <div className="sortBy" >
+              <button className="sortByBtn">
+                {orderBy}
+                <i className="arrow down" style={{
+                  border: 'solid rgb(0, 0, 0)',
+                  borderWidth: '0 3px 3px 0',
+                  display: 'inline-block',
+                  position: 'static',
+                  padding: '2px',
+                  marginLeft: '18px',
+                  marginBottom: '2px',
+                  color: 'black'
+                }}></i>
+              </button>
+              <div className="sortBy-content">
+                <div onClick={
+                  () => {
+                    var tmp = [].concat(data).sort((a, b) => a.postDate < b.postDate ? 1 : -1);
+                    setData(tmp);
+                    setOrderBy("newest to oldest")
+                  }
+                }>newest to oldest</div>
+                <div onClick={
+                  () => {
+                    var tmp = [].concat(data).sort((a, b) => a.postDate > b.postDate ? 1 : -1);
+                    setData(tmp);
+                    setOrderBy("oldest to newest");
+                  }
+                }>oldest to newest</div>
+                <div onClick={
+                  () => {
+                    var tmp = [].concat(data).sort((a, b) => a.name > b.name ? 1 : -1);
+                    setData(tmp);
+                    setOrderBy("A - Z");
+                  }
+
+                }>A - Z</div>
+                <div onClick={
+                  () => {
+                    if (orderBy == "Z - A") return;
+                    var tmp = [].concat(data).sort((a, b) => a.name < b.name ? 1 : -1);
+                    setData(tmp);
+                    setOrderBy("Z - A")
+                  }
+                }>Z - A</div>
+
+
+
+              </div>
+            </div>
+
+
+            <div className="sortBy" >
+              <button className="sortByBtn">
+                search by city
+                <i className="arrow down" style={{
+                  border: 'solid rgb(0, 0, 0)',
+                  borderWidth: '0 3px 3px 0',
+                  display: 'inline-block',
+                  position: 'static',
+                  padding: '2px',
+                  marginLeft: '18px',
+                  marginBottom: '2px',
+                  color: 'black'
+                }}></i>
+              </button>
+              <div className="sortBy-content">
+                {
+                  cities.map((i)=>
+                    <div key={i} onClick={(e)=>{
+                      if(i=='all'){
+                        setNoSuchElement(false)
+                        setData(originalData);
+                        handleChangeRightData(originalData[0]);
+                        return ;
+                      }
+                      var tmp=[].concat(originalData).filter(a=>a.author.location==i);
+                      if(tmp.length<1){
+                        setNoSuchElement(true);
+                      }
+                      else setNoSuchElement(false);
+                      setData(tmp);
+                      setSearchByCity(e.target.value);
+                      if(tmp.length)handleChangeRightData(tmp[0]);
+                    }}>{i}</div>
+                  )
+                }
+              </div>
+
+            </div>
+
           </div>
 
           <div className="leftDiv">
             {
-              (noSuchElement) ? (
+              (emptyCategory) ? (
+                <span style={{ marginLeft: '20%', fontSize: '15px', height: '100%', marginTop: '50%', color: 'red' }}>no elements in this category</span>
 
-                <span style={{ marginLeft: '40%', fontSize: '15px', height: '100%', marginTop: '50%', color: 'red' }}>no such element</span>
-              ) : <></>
+              ) : (<></>)
             }
+            
             {
               (fetchingOnRight && !noSuchElement) ? (
                 <div className="loading">
@@ -209,6 +302,7 @@ export default function () {
                 </div>
               ) : (<></>)
             }
+
             <div style={{
               display: 'contents',
               flexWrap: 'wrap',
@@ -222,12 +316,18 @@ export default function () {
                 overflow: 'hidden',
                 overflowY: 'scroll',
               }}>
+                {
+              (noSuchElement && !emptyCategory) ? (
+
+                <span style={{ marginLeft: '40%', fontSize: '15px', marginTop: '50%', color: 'red' }}>no such element</span>
+              ) : <></>
+            }
 
                 {
                   (data) ? (
                     data.map((item) =>
                       <div key={item.id} className="leftCards" id={item.id}
-                        style={item.id == data[0].id ? { backgroundColor: '#eeeeee' } : {}}
+                        style={item.id == data[0].id ? { backgroundColor: 'rgb(216, 211, 211)' } : {}}
                         onClick={(e) => {
                           handleChangeRightData(item)
                           var d = document.getElementsByClassName('leftCards');
@@ -245,6 +345,9 @@ export default function () {
                           <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                               {'Donor : ' + item.author.userName}
+                            </Typography>
+                            <Typography gutterBottom variant="h5" component="div">
+                              {'Since : ' + item.postDate.substring(0, 10)}
                             </Typography>
                           </CardContent>
                           <CardActions>
@@ -329,8 +432,8 @@ export default function () {
                     <div className="descriptionTextArea" style={{ width: '100%', height: '120px', display: 'grid', marginLeft: '-15px', top: '0px' }} >
                       <ArticleIcon titleAccess="item description" size="20px" style={{ marginLeft: '10px', marginTop: '105x' }}></ArticleIcon>
                       <p style={{
-                        marginTop: '-22px', marginLeft: '40px', fontSize: '15px',
-                        wordBreak: 'break-all', display: 'felx'
+                        marginTop: '-22px', marginLeft: '40px', fontSize: '15px', width: 'auto',
+                        wordBreak: 'normal', display: 'felx'
                       }}>
                         {postDescription}
                       </p>
@@ -363,7 +466,7 @@ function showUser(username) {
       </button>
       <div className="dropdown-content">
         <Link to="/personalPage"> personal page</Link>
-        <Link to="/myPosts"> my posts</Link>
+        <Link to="/myDonations"> my donations</Link>
         <Link to="/" onClick={logout}> logout</Link>
       </div>
     </div>

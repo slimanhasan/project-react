@@ -133,7 +133,7 @@ export default function () {
         setTimeout(() => {
             setFetching(false);
             window.location.replace("/")
-        }, 2000);
+        }, 1000);
 
 
 

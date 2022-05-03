@@ -99,26 +99,24 @@ export default function ({setToken}) {
 
             }
             else{
-                res=res.json();
-                setToken(res.token)
-                return res;
+                res.json().then(res2=>{
+                    setToken(res2.token,res2.username);
+                    return res2;
+                }).then(async res3=>{
+                    if(image){
+                        const formdata=new FormData();
+                        formdata.append("image",e.target['image'].files[0]);
+                        formdata.append("email",values.email)
+                        await fetch("http://localhost:8080/setUserImage",{
+                            method:'post',
+                            
+                            body:formdata
+                        })
+                    }
+                    window.location.href="/createPost"
+                })
             }
         });
-        if(!token)return 
-        if(image){
-            const formdata=new FormData();
-            formdata.append("image",e.target['image'].files[0]);
-            formdata.append("email",values.email)
-            await fetch("http://localhost:8080/setUserImage",{
-                method:'post',
-                
-                body:formdata
-            })
-        }
-        window.location.href="/createPost"
-
-    
-
     }
     return (
         <CssBaseline >
