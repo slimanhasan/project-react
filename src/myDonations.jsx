@@ -23,7 +23,6 @@ import { MdPhoneEnabled } from "react-icons/md";
 import { blue } from "@material-ui/core/colors";
 import { EmailRounded } from "@material-ui/icons";
 import { InputBase } from "@material-ui/core";
-import { Select, MenuItem } from '@material-ui/core';
 const API_URL = "http://localhost:8080/getItems/";
 
 const images = [];
@@ -43,15 +42,18 @@ export default function () {
   const [postDescription, setPostDescription] = useState();
   const [fetchingOnRight, setFetchingOnRight] = useState(true);
   const [noSuchElement, setNoSuchElement] = useState(false);
-  const [searchByCity,setSearchByCity]=useState("search by city");
   const [searchWord, setSearchWord] = useState("");
   const [emptyCategory, setEmptyCategory] = useState(false);
-  const { status, posts, error, isFetching } = useQuery("getPosts", async () => {
-    const catName = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
-    const { data } = await axios.get(API_URL + catName);
+  const { status, posts, error, isFetching } = useQuery("getMyDonations", async () => {
+    const { data } = 
+      await axios.get("http://localhost:8080/getMyDonations",{
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
+    );
     setData(data);
     setOriginalData(data);
-    console.log(data);
     if (data.length == 0) {
       setEmptyCategory(true);
       setFetchingOnRight(false);
@@ -167,16 +169,20 @@ export default function () {
                 value={searchWord}
                 onChange={async (e) => {
                   setSearchWord(e.target.value)
-                  console.log(e.target.value);
                   if (e.target.value.length == 0) {
                     setNoSuchElement(false);
-                    setData(posts);
+                    setData(originalData);
+                    handleChangeRightData(originalData[0])
+                    return ;
                   }
-                  const newData = await axios.get("http://localhost:8080/getItems/" + curCategory + "?q=" + e.target.value);
-                  if (newData.data.length > 0) {
-
-                    setData(newData.data);
-                    handleChangeRightData(newData.data[0])
+                  const newData=[]
+                  for(let i=0;i<originalData.length;i++){
+                    if(originalData[i].name.includes(e.target.value))newData.push(originalData[i]);
+                  }
+                  if (newData.length > 0) {
+                    setNoSuchElement(false);
+                    setData(newData);
+                    handleChangeRightData(newData[0])
                   }
                   else {
                     setData([]);
@@ -186,8 +192,9 @@ export default function () {
                     setPostLocation("");
                     setPostDescription("");
                     setPostUserPhone("");
-
+                    
                   }
+                  console.log(e.target.value+ " " + newData.length + " " + data);
 
                 }}
 
@@ -312,9 +319,7 @@ export default function () {
                           </CardContent>
                           <CardActions>
                             <Avatar sx={{ bgcolor: blue[700] }}>{item.author.userName[0].toUpperCase()}</Avatar>
-                            <Link to="/personalPage" target={"_blank"} className="viewProfileLink" >
-                              <h4 style={{ color: 'blue', marginTop: '-0px' }}>view profile</h4>
-                            </Link>
+                            
                           </CardActions>
                         </CardContent>
 
@@ -415,7 +420,7 @@ export default function () {
 function showUser(username) {
   const logout = () => {
     sessionStorage.clear();
-    window.location.reload();
+    window.location.href="/";
   }
   return (
 

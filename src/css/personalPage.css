@@ -1,0 +1,37 @@
+.parDiv{
+    background: url('../assets/loginBackground.jpg') fixed;
+    background-size:cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    min-height: 100vh;
+}
+
+.gallery{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+  
+.editBtn{
+    width:auto;
+    background-color:rgb(58, 171, 171);
+    color:white;
+    margin-right: 40px;
+}
+.editBtn:hover{
+    background-color:rgb(47, 145, 145);
+
+}
+
+.deleteBtn{
+    width:auto;
+    background-color:rgb(222, 38, 38);
+    color:white;
+    margin-right: 10px;
+}
+.deleteBtn:hover{
+    background-color:rgb(160, 0, 0);
+
+}

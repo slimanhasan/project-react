@@ -289,6 +289,7 @@ export default function () {
 function showUser(username) {
     const logout = () => {
         sessionStorage.clear();
+        console.log("SSS");
         window.location.href = "/";
     }
     return (
@@ -300,7 +301,7 @@ function showUser(username) {
             </button>
             <div className="dropdown-content">
                 <Link to="/personalPage"> personal page</Link>
-                <Link to="/myPosts"> my posts</Link>
+                <Link to="/myDonations"> my posts</Link>
                 <Link to="/" onClick={logout}> logout</Link>
             </div>
         </div>

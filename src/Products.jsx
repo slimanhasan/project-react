@@ -23,7 +23,6 @@ import { MdPhoneEnabled } from "react-icons/md";
 import { blue } from "@material-ui/core/colors";
 import { EmailRounded } from "@material-ui/icons";
 import { InputBase } from "@material-ui/core";
-import { Select, MenuItem } from '@material-ui/core';
 const API_URL = "http://localhost:8080/getItems/";
 
 const images = [];
@@ -247,7 +246,7 @@ export default function () {
 
             <div className="sortBy" >
               <button className="sortByBtn">
-                search by city
+                {searchByCity}
                 <i className="arrow down" style={{
                   border: 'solid rgb(0, 0, 0)',
                   borderWidth: '0 3px 3px 0',
@@ -263,6 +262,7 @@ export default function () {
                 {
                   cities.map((i)=>
                     <div key={i} onClick={(e)=>{
+                      setSearchByCity(e.target.innerHTML);
                       if(i=='all'){
                         setNoSuchElement(false)
                         setData(originalData);
@@ -275,7 +275,6 @@ export default function () {
                       }
                       else setNoSuchElement(false);
                       setData(tmp);
-                      setSearchByCity(e.target.value);
                       if(tmp.length)handleChangeRightData(tmp[0]);
                     }}>{i}</div>
                   )
@@ -352,7 +351,7 @@ export default function () {
                           </CardContent>
                           <CardActions>
                             <Avatar sx={{ bgcolor: blue[700] }}>{item.author.userName[0].toUpperCase()}</Avatar>
-                            <Link to="/personalPage" target={"_blank"} className="viewProfileLink" >
+                            <Link to={{pathname:'/viewProfile',search:'?q='+item.author.id}} target={"_blank"}  className="viewProfileLink" >
                               <h4 style={{ color: 'blue', marginTop: '-0px' }}>view profile</h4>
                             </Link>
                           </CardActions>
