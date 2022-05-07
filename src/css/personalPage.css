@@ -14,24 +14,42 @@
     margin-top: 20px;
 }
   
-.editBtn{
-    width:auto;
-    background-color:rgb(58, 171, 171);
-    color:white;
-    margin-right: 40px;
+.errMsg{
+    padding:3px ;
+    color: rgb(253, 1, 1);
+    font-size:14px ;
+    margin-left: 80px;
 }
-.editBtn:hover{
-    background-color:rgb(47, 145, 145);
-
+.userPhoto{
+    width: 300px;
+    height:300px;
+    border-radius:80px;
 }
-
-.deleteBtn{
-    width:auto;
-    background-color:rgb(222, 38, 38);
-    color:white;
-    margin-right: 10px;
+.userPhotoContainer{
+    margin-left:20px;
+    margin-top:40px;
+    display:flex;
+    margin-bottom: 10px; 
 }
-.deleteBtn:hover{
-    background-color:rgb(160, 0, 0);
-
+.overlay {
+    position: absolute;
+    cursor: pointer;
+    height: 40%;
+    width: 19.7%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: rgba(0, 0,0,0.3);
+    border-radius: 80px;
+  }
+.userPhotoContainer:hover .overlay{
+    opacity: 1;
+}
+  
+.text {
+    color: rgb(255, 255, 255);
+    width: auto;
+    height: auto;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 50%;
 }
