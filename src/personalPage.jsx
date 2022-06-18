@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { CssBaseline } from '@material-ui/core';
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -16,15 +16,21 @@ import Visibility from "@material-ui/icons/Visibility";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Input from "@material-ui/core/Input";
+import CardContent from '@mui/material/CardContent';
+
 import './css/personalPage.css'
-import photo from './assets/1.jpg';
 import useToken from "./service/useToken";
 const API_URL = "http://localhost:8080/getPersonalPageData"
 const updateApi = 'http://localhost:8080/updateUserData';
+const imageApi = "http://localhost:8080/getPostPhotos?postId=";
+
 export default function () {
 
     const { username, setUsername } = useUsername();
     const { token, setToken } = useToken();
+    if(!token){
+        window.location.href="/login";
+    }
     const [userData, setUserData] = useState();
     const [personUsername, setPersonUsername] = useState();
     const [personEmail, setPersonEmail] = useState();
@@ -41,6 +47,12 @@ export default function () {
     const [phoneError, setPhoneError] = useState();
     const [locationError, setLocationError] = useState();
     const [birthDateError, setBirthDateError] = useState();
+    const [changedImage, setChangedImage] = useState(false);
+    const [imgToSend, setImgToSend] = useState(null);
+    const [posts, setPosts] = useState([]);
+    const [selectedPost, setSelectedPost] = useState()
+    const titleRef = useRef();
+
     const { status, data, error, isFetching } = useQuery("getPersonalData", async () => {
         const { data } = await axios.get(API_URL, {
             headers: {
@@ -56,6 +68,7 @@ export default function () {
         setPersonLocation(data.user.location);
         setPersonBirthDate(new Date(data.user.date).toISOString().split('T')[0]);
         setPersonImage(data.userImage);
+        setPosts(data.posts)
     }, {
         refetchOnMount: false,
         refetchOnWindowFocus: false
@@ -67,6 +80,7 @@ export default function () {
             e.target.style.backgroundColor = 'rgb(41, 173, 31)'
             let d = document.getElementsByTagName('input');
             for (let i = 0; i < d.length; i++) {
+                if (d[i].type == 'email') continue;
                 d[i].removeAttribute('disabled');
                 d[i].style.backgroundColor = '#cbddea';
                 d[i].style.borderRadius = '10px';
@@ -80,10 +94,7 @@ export default function () {
                 setUsernameError('user name must be at least 3 characters')
                 return;
             }
-            if (!(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(personEmail))) {
-                setEmailError('invalid email');
-                return;
-            }
+
             if (personPassword.length < 5) {
                 setPasswordError('password must be at least 5 characters');
                 return;
@@ -101,21 +112,40 @@ export default function () {
                 return;
             }
 
-            const f=new FormData();
-            f.append('username',personUsername);
-            f.append('email',personEmail);
-            f.append('password',personPassword);
-            f.append('location',personLocation);
-            f.append('date',new Date(personBirthDate));
-            f.append('phone',personPhone);
-            await axios.post(updateApi,f,{
+            const f = new FormData();
+            f.append('username', personUsername);
+            f.append('email', personEmail);
+            f.append('password', personPassword);
+            f.append('location', personLocation);
+            f.append('date', new Date(personBirthDate));
+            f.append('phone', personPhone);
+            await axios.post(updateApi, f, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
-            }).then(res=>{
-                console.log(res.status)
+            }).then(async (res) => {
+                if (res.data == 'existed number') {
+                    console.log(res.data)
+                    setPhoneError('existed phone number');
+                    return;
+
+                }
+                if (imgToSend) {
+                    console.log("inside image API")
+                    const f2 = new FormData();
+                    f2.append("image", document.getElementById('uploadImageBtn').files[0]);
+                    f2.append("email", personEmail);
+                    console.log(personImage);
+
+                    await axios.post("http://localhost:8080/setUserImage", f2)
+                        .then((res) => {
+                            console.log(res.status)
+                        })
+
+                }
             })
-            
+
+            if (phoneError) return;
 
 
 
@@ -131,6 +161,9 @@ export default function () {
 
             setEditStatus(true);
         }
+
+
+
     }
     if (isFetching) {
         return (
@@ -192,18 +225,19 @@ export default function () {
                         }}>
                             <div className="userPhotoContainer" >
                                 <img className='userPhoto' src={
-                                    (personImage==userData.userImage)?`data:image/png;base64,${personImage}`
-                                    :personImage
-                            }></img>
+                                    (personImage == userData.userImage) ? `data:image/png;base64,${personImage}`
+                                        : personImage
+                                }></img>
                                 <div className="overlay" style={{ display: 'none' }} onClick={(e) => {
                                     document.getElementById('uploadImageBtn').click();
                                 }}>
                                     <p className="text">update photo</p>
                                     <input id='uploadImageBtn' type='file' style={{ display: 'none' }}
                                         onChange={(e) => {
+                                            setChangedImage(true);
                                             const reader = new FileReader();
                                             reader.onload = function (e2) {
-                                                setPersonImage(e2.target.result);
+                                                setImgToSend(e2.target.result);
                                             }
                                             reader.readAsDataURL(e.target.files[0]);
                                         }}
@@ -415,56 +449,86 @@ export default function () {
                         </div>
                     </div>
                     <h3 style={{ marginLeft: '45%' }}>your donations</h3>
-                    <div style={{
-                        position: 'static',
-                        margin: 'auto',
-                        marginTop: '20px',
-                        width: '60%',
-                        background: 'rgba(255,255,255,0.4)',
-                        boxShadow: '0 8px 32px 0 rgba(31,38,135,0.37)',
-                        backgroundFilter: 'blur(8.5px)',
-                    }}>
-                        <Grid item md={12}
-                            container
-                            spacing={2}
-                            direction="row"
-                            justifyContent="flex-start"
-                            alignItems="flex-start"
-                        >
-                            <Card className="card" sx={{ width: '150px', height: '150px' }} style={{
-                                margin: 20,
-                                marginLeft: 50,
-                                transition: 'transform .3s',
-                                borderRadius: '90px'
 
-                            }}>
+                    <Grid
+
+                        container
+                        spacing={2}
+                        direction="row"
+                        justify="flex-start"
+                        alignItems="flex-start"
+                        display="flex"
+                        style={{
+                            margin: 'auto',
+                            marginTop: '20px',
+                            width: '60%',
+                            background: 'rgba(255,255,255,0.4)',
+                            boxShadow: '0 8px 32px 0 rgba(31,38,135,0.37)',
+                            backgroundFilter: 'blur(8.5px)',
+                        }}>
+                        {
+                            posts.map((item) =>
+                                <Grid key={item.id} item xs={12} sm={6} md={3} >
 
 
+                                    <Card className="card" sx={{ width: 140 }} style={{
+                                        marginTop: 10,
+                                        marginLeft: 50,
+                                        marginBottom: 8,
 
-                                <CardMedia
-                                    component="img"
-                                    height="100%"
-                                    src={photo}
-                                    alt="green iguana"
+                                        height: 140,
+                                        transition: 'transform .3s',
+                                        borderRadius: '20px',
 
-                                />
+                                    }}
+                                        onClick={async(e) => {
+                                            await setSelectedPost(item)
+                                            titleRef.current.scrollIntoView({ behavior: "smooth" });
 
-                            </Card>
-                        </Grid>
+                                        }}
+                                    >
 
-                    </div>
 
+                                        <CardMedia
+                                            component="img"
+                                            height="110"
+                                            src={imageApi + item.id + "&num=0"}
+                                            alt="green iguana"
+
+                                        />
+                                        <div style={{height:'10px',textAlign:'center',fontSize:'large'}}>
+                                            {item.name}
+
+                                        </div>
+                                    </Card>
+                                </Grid>
+
+                            )}
+                    </Grid>
+                    {
+                        (selectedPost) ? (
+                            <div ref={titleRef}>
+                                <h1>{selectedPost.name}</h1>
+                            </div>
+                        ) : (<></>)
+                    }
                 </div>
+
+
             </CssBaseline>
 
         )
 
 
 }
+function handleScroll(selectedPost, titleRef) {
+
+    titleRef.current.scrollIntoView({ behavior: "smooth" });
+}
 function showUser(username) {
     const logout = () => {
         sessionStorage.clear();
-        window.location.reload();
+   //     window.location.reload();
     }
     return (
 

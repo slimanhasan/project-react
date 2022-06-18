@@ -111,10 +111,10 @@ export default function Category() {
               data.map((item) =>
                 <Grid key={item.id} item xs={12} sm={6} md={3}>
 
-                  <Card className="card" sx={{ width: 200 }} style={{
+                  <Card className="card" sx={{ width: 230 }} style={{
                     margin: 20,
                     marginLeft: 50,
-                    height: 200,
+                    height: 250,
                     transition: 'transform .3s',
                     borderRadius: '20px'
 
@@ -125,7 +125,7 @@ export default function Category() {
 
                       <CardMedia
                         component="img"
-                        height="150"
+                        height="200"
                         src={imageApi + item.id}
                         alt="green iguana"
 
@@ -177,7 +177,7 @@ function getFooter() {
   return (
 
 
-    <div style={{ height: '7rem', border: '10px solid transparent', background: 'rgba(0,0,0,0.7)' }} >
+    <div style={{ height: '7rem', border: '10px solid transparent', background: 'rgba(0,0,0,0.5)' }} >
       <Container maxWidth="lg" bgcolor="text.secondary" className="footer">
         <Grid container spacing={1} >
           <Grid item xs={12} sm={6}  >

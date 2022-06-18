@@ -288,7 +288,7 @@ export default function () {
           <div className="leftDiv">
             {
               (emptyCategory) ? (
-                <span style={{ marginLeft: '20%', fontSize: '15px', height: '100%', marginTop: '50%', color: 'red' }}>no elements in this category</span>
+                <p style={{ marginLeft: '20%', fontSize: '15px', height: 'auto',  color: 'red',borderStyle:'dashed' }}>no elements in this category</p>
 
               ) : (<></>)
             }
@@ -334,7 +334,7 @@ export default function () {
                             d[i].className = 'leftCards';
                             d[i].style.backgroundColor = ''
                           }
-                          document.getElementById(item.id).style.backgroundColor = '#eeeeee';
+                          document.getElementById(item.id).style.backgroundColor = '#d2d2d2';
 
                         }}>
                         <CardContent style={{ justifyContent: 'center' }} >
