@@ -115,7 +115,7 @@ export default function () {
               </Link>
               <Link to="/categories" >
                 <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}>
-                  <h4 style={{ color: 'white' }}>donations</h4>
+                  <h4 style={{ color: 'white' }}>categories</h4>
                 </Button>
               </Link>
               <Link to={(token) ? '/createPost' : '/login'}>

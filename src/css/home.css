@@ -1,0 +1,116 @@
+.homeParDiv{
+    background-color: rgb(249, 249, 249);
+}
+.bg{
+    background: url('../assets/gmp.jpg')no-repeat fixed;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 40%;
+}
+.upperDiv{
+    
+
+    width: 100%;
+    
+    display: flex;
+    flex-direction: row;
+}
+.homeBody{
+    height: 180vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    
+}
+.buttons{
+    display: flex;
+    flex-direction: row; 
+    margin-bottom: 20px;   
+}
+.helpText{
+    color: rgb(102, 174, 237);
+    font-size: 55px;
+    height: max-content;
+    margin-top: -30px;
+    margin-left: 80px;
+    font-weight: bold;
+    
+}
+.loginStyledBtn{
+    background: rgb(102, 174, 237);
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    width: 210%;
+    height: 3rem;
+    border: none;
+    color: rgb(255, 255, 255);
+    border-radius: 2rem;
+    cursor: pointer;
+}
+.loginStyledBtn:hover{
+    transform: scale(1.1);
+    transition: 1s;
+    border: none;
+}
+.registerStyledBtn{
+    background: rgb(102, 174, 237);
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    width: 140%;
+    height: 3rem;
+    border: none;
+    color: rgb(255, 255, 255);
+    border-radius: 2rem;
+    cursor: pointer;
+}
+.registerStyledBtn:hover{
+    transform: scale(1.1);
+    transition: 1s;
+    border: none;
+}
+.middleDiv{
+    width: 100%;
+    
+    display: flex;
+    flex-direction: row;
+    height: 70vh;
+}
+.left{
+
+    width: 40%;
+}
+.leftContent{
+
+    margin-top: 100px;
+    margin-left: 100px;
+    line-height: 30px;
+    display: flex;
+    flex-direction: column;
+}
+.right{
+    width: 60%;
+}
+.rightContent{
+    margin-left:210px;
+    margin-top:10px;
+    display:flex;
+    margin-bottom: 10px; 
+}
+.middlePhoto{
+    width: auto;
+    height: auto;
+    border-radius:80px;
+    display: flex;
+    margin-top: 7%;
+    
+}
+.bottomDiv{
+    background: url('../assets/homeDownDiv.jpg')no-repeat ;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+}

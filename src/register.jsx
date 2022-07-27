@@ -121,25 +121,35 @@ export default function ({setToken}) {
     return (
         <CssBaseline >
             <div className='parDiv'>
-                <AppBar position="static"
-                    style={{ background: 'rgba(0,0,0,0.5)' }}
-                >
-                    <Toolbar >
+            <AppBar position="static"
+                        style={{ background: 'rgba(0,0,0,0.5)' }}
+                    >
+                        <Toolbar >
 
-                        <Typography variant="h5"
-                            component="div" sx={{ padding: 3, flexGrow: 1 }}
+                            <Typography variant="h5"
+                                component="div" sx={{ padding: 3, flexGrow: 1 }}
 
-                        >
-                            WebSite Name
-                        </Typography>
-                        <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}><h3>home</h3></Button>
-                        <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}><h3>content</h3></Button>
-                        <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}><h3>contact</h3></Button>
-                        <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}><h3>category's</h3></Button>
-                        <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)' }}><h4>donate now</h4></Button>
+                            >
+                                WebSite Name
+                            </Typography>
+                            <Link to="/">
+                                <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}>
+                                    <h4 style={{ color: 'white' }}>home</h4>
+                                </Button>
+                            </Link>
+                            <Link to="/categories" >
+                                <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}>
+                                    <h4 style={{ color: 'white' }}>categories</h4>
+                                </Button>
+                            </Link>
+                            <Link to='/createPost'>
+                                <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}>
+                                    <h4 style={{ color: 'white' }}>donate now</h4>
+                                </Button>
+                            </Link>
 
-                    </Toolbar>
-                </AppBar>
+                        </Toolbar>
+                    </AppBar>
                 <div className='loginPagebody' >
                     <div className='registerMainContainer'>
                         <h2 className='registerWelcomeText'>YOU ARE WELCOME </h2>

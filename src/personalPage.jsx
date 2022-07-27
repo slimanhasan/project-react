@@ -17,7 +17,8 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Input from "@material-ui/core/Input";
 import CardContent from '@mui/material/CardContent';
-
+import SimpleImageSlider from "react-simple-image-slider";
+import swal from "sweetalert";
 import './css/personalPage.css'
 import useToken from "./service/useToken";
 const API_URL = "http://localhost:8080/getPersonalPageData"
@@ -28,8 +29,8 @@ export default function () {
 
     const { username, setUsername } = useUsername();
     const { token, setToken } = useToken();
-    if(!token){
-        window.location.href="/login";
+    if (!token) {
+        window.location.href = "/login";
     }
     const [userData, setUserData] = useState();
     const [personUsername, setPersonUsername] = useState();
@@ -51,6 +52,15 @@ export default function () {
     const [imgToSend, setImgToSend] = useState(null);
     const [posts, setPosts] = useState([]);
     const [selectedPost, setSelectedPost] = useState()
+    const [images, setImages] = useState([]);
+    const [selectedPostName, setSelectedPostName] = useState();
+    const [selectedPostDescription, setSelectedPostDescription] = useState();
+    const [editPostStatus, setEditPostStatus] = useState(false);
+    const [selectedPostErrorName, setSelectedPostErrorName] = useState();
+    const [selectedPostErrorDescription, setSelectedPostErrorDescription] = useState();
+
+
+
     const titleRef = useRef();
 
     const { status, data, error, isFetching } = useQuery("getPersonalData", async () => {
@@ -73,6 +83,135 @@ export default function () {
         refetchOnMount: false,
         refetchOnWindowFocus: false
     });
+
+
+
+    const handleDeleteAccount = async () => {
+        await axios.get("http://localhost:8080/deleteAccount?uid=" + userData.user.id)
+        window.sessionStorage.clear();
+        window.location.href = "/";
+    }
+
+
+
+    const openSelectedPostFields = async (e) => {
+
+        if (!editPostStatus) {
+
+            let d = document.getElementById('selectedPostName');
+            d.removeAttribute('disabled');
+            d.style.backgroundColor = '#cbddea';
+            d.style.borderRadius = '10px';
+            e.target.innerHTML = 'save';
+
+            d = document.getElementById('selectedPostDescription');
+            d.removeAttribute('disabled');
+            d.style.backgroundColor = '#cbddea';
+            d.style.borderRadius = '10px';
+
+            e.target.style.backgroundColor = 'rgb(41, 173, 31)'
+            setEditPostStatus(true);
+        }
+        else {
+            if (selectedPostName.length < 3) {
+                setSelectedPostErrorName("title must be at least 3 characters");
+                return;
+            }
+            if (selectedPostDescription.length < 3) {
+                setSelectedPostErrorDescription("description is short");
+                return;
+            }
+
+            await axios({
+                method: 'post',
+                url: "http://localhost:8080/updatePost",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                data: {
+                    id: selectedPost.id,
+                    name: selectedPostName,
+                    description: selectedPostDescription
+                }
+            }).then(res => {
+                window.location.reload();
+            })
+
+        }
+
+
+    }
+
+
+
+    const handleDeletePost = async (e) => {
+        await axios({
+            method: 'post',
+            url: "http://localhost:8080/deletePost",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            data: {
+                id: selectedPost.id,
+
+            }
+        }).then(res => {
+            window.location.reload();
+        })
+
+    }
+
+
+
+    const handleSelectPost = async (e) => {
+        setImages([])
+        setSelectedPost(e)
+        setSelectedPostName(e.name);
+        setSelectedPostDescription(e.description);
+        const numberOfPhotos = await axios.get("http://localhost:8080/getNumberOfPhotosForItem?postId=" + e.id);
+        const cur = [];
+        for (var i = 0; i < numberOfPhotos.data; i++) {
+            cur.push(imageApi + e.id + "&num=0" + i);
+        }
+        setImages(arr => cur);
+
+    }
+
+
+
+    const setPostAsTaken = async () => {
+         swal({
+            title: "Are you sure?",
+            icon: "info",
+            buttons: true,
+            dangerMode: false,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+
+                     axios({
+                        method: 'post',
+                        url: "http://localhost:8080/setPostAsTaken",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                        data: {
+                            id: selectedPost.id,
+            
+                        }
+                    })
+
+                    swal("updated succussfully", {
+                        icon: "success",
+                    });
+                } else {
+                    swal("it's ok :)");
+                }
+            });
+    }
+
+
+
     const openInputFields = async (e) => {
         if (editStatus) {
             document.getElementsByClassName('overlay')[0].style.display = 'block'
@@ -195,7 +334,7 @@ export default function () {
                             </Link>
                             <Link to="/categories" >
                                 <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}>
-                                    <h4 style={{ color: 'white' }}>donations</h4>
+                                    <h4 style={{ color: 'white' }}>categories</h4>
                                 </Button>
                             </Link>
                             <Link to='/createPost'>
@@ -232,7 +371,7 @@ export default function () {
                                     document.getElementById('uploadImageBtn').click();
                                 }}>
                                     <p className="text">update photo</p>
-                                    <input id='uploadImageBtn' type='file' style={{ display: 'none' }}
+                                    <input id='uploadImageBtn' type='file' style={{ display: 'none'  }}
                                         onChange={(e) => {
                                             setChangedImage(true);
                                             const reader = new FileReader();
@@ -444,7 +583,7 @@ export default function () {
                                 marginTop: '3px',
                                 marginBottom: '3px'
 
-                            }}>delete account</Button>
+                            }} onClick={(e) => handleDeleteAccount()}>delete account</Button>
 
                         </div>
                     </div>
@@ -472,17 +611,18 @@ export default function () {
 
 
                                     <Card className="card" sx={{ width: 140 }} style={{
-                                        marginTop: 10,
                                         marginLeft: 50,
-                                        marginBottom: 8,
+                                        marginBottom: 12,
 
                                         height: 140,
                                         transition: 'transform .3s',
                                         borderRadius: '20px',
+                                        cursor: 'pointer'
 
                                     }}
-                                        onClick={async(e) => {
-                                            await setSelectedPost(item)
+                                        onClick={async (e) => {
+                                            await handleSelectPost(item)
+
                                             titleRef.current.scrollIntoView({ behavior: "smooth" });
 
                                         }}
@@ -496,7 +636,7 @@ export default function () {
                                             alt="green iguana"
 
                                         />
-                                        <div style={{height:'10px',textAlign:'center',fontSize:'large'}}>
+                                        <div style={{ height: '10px', textAlign: 'center', fontSize: 'large' }}>
                                             {item.name}
 
                                         </div>
@@ -507,28 +647,206 @@ export default function () {
                     </Grid>
                     {
                         (selectedPost) ? (
-                            <div ref={titleRef}>
-                                <h1>{selectedPost.name}</h1>
+                            <div ref={titleRef} style={{
+                                margin: 'auto',
+                                marginTop: '20px',
+                                width: '60%',
+                                height: '350px',
+                                background: 'rgba(255,255,255,0.4)',
+                                boxShadow: '0 8px 32px 0 rgba(31,38,135,0.37)',
+                                backgroundFilter: 'blur(8.5px)',
+                                display: 'flex',
+                                flexDirection: 'row',
+                                flexWrap: 'nowrap',
+                                justifyContent: 'flex-start',
+                            }}>
+                                <div style={{
+                                    float: 'left',
+                                    width: '50%',
+                                    height: 'auto',
+                                }}>
+
+
+
+                                    <CardContent style={{ justifyContent: 'center' }} >
+                                        <CardContent>
+                                            <div style={{ width: '100%', display: 'flex', flexDirection: 'row', height: '15%', marginTop: '10px' }}>
+
+                                                <label style={{ marginTop: '21px', fontSize: 'large' }}>
+                                                    name :
+
+                                                </label>
+                                                <Input id="selectedPostName" type='text' style={{
+                                                    backgroundColor: 'transparent',
+                                                    border: 'none',
+                                                    color: 'black',
+                                                    marginLeft: '80px',
+                                                    fontSize: '20px',
+                                                    marginTop: '10px',
+                                                    width: '40%'
+
+                                                }}
+                                                    disabled
+                                                    value={selectedPostName}
+                                                    onChange={(e) => { setSelectedPostErrorName(""); setSelectedPostName(e.target.value) }}
+                                                />
+                                                {(selectedPostErrorName) ? <span className='selectedPostErrMsg'> {selectedPostErrorName} </span> : <></>}
+
+                                            </div>
+                                            <div style={{ width: '100%', display: 'flex', flexDirection: 'row', height: '15%', marginTop: '10px' }}>
+
+                                                <label style={{ marginTop: '21px', fontSize: 'large' }}>
+                                                    Description :
+
+                                                </label>
+                                                <Input id="selectedPostDescription" type='text' style={{
+                                                    backgroundColor: 'transparent',
+                                                    border: 'none',
+                                                    color: 'black',
+                                                    marginLeft: '32px',
+                                                    fontSize: '20px',
+                                                    marginTop: '10px',
+                                                    width: '40%'
+
+                                                }}
+                                                    disabled
+                                                    value={selectedPostDescription}
+                                                    onChange={(e) => { setSelectedPostErrorDescription(""); setSelectedPostDescription(e.target.value) }}
+
+                                                />
+                                                {(selectedPostErrorDescription) ? <span className='selectedPostErrDescription'> {selectedPostErrorDescription} </span> : <></>}
+
+                                            </div>
+                                            <div style={{ width: '100%', display: 'flex', flexDirection: 'row', height: '15%', marginTop: '10px' }}>
+
+                                                <label style={{ marginTop: '21px', fontSize: 'large' }}>
+                                                    post Date :
+
+                                                </label>
+                                                <div type='text' style={{
+                                                    backgroundColor: 'transparent',
+                                                    border: 'none',
+                                                    color: 'black',
+                                                    marginLeft: '47px',
+                                                    fontSize: '20px',
+                                                    marginTop: '15px',
+                                                    width: '30%'
+
+                                                }}
+
+
+                                                >
+                                                    {selectedPost.postDate.substring(0, 10)}
+                                                </div>
+                                            </div>
+                                            <div style={{ width: '100%', display: 'flex', flexDirection: 'row', height: '15%', marginTop: '10px' }}>
+
+                                                <label style={{ marginTop: '21px', fontSize: 'large' }}>
+                                                    Location :
+
+                                                </label>
+                                                <div type='text' style={{
+                                                    backgroundColor: 'transparent',
+                                                    border: 'none',
+                                                    color: 'black',
+                                                    marginLeft: '54px',
+                                                    fontSize: '20px',
+                                                    marginTop: '15px',
+                                                    width: '30%'
+
+                                                }}
+                                                    disabled
+
+                                                >
+                                                    {selectedPost.author.location}
+
+                                                </div>
+                                            </div>
+
+                                        </CardContent>
+
+                                        <div style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: '5px' }}>
+
+                                            <Button id='editBtn' style={{
+                                                width: '110px',
+                                                height: '40px',
+                                                backgroundColor: 'rgb(58, 171, 171)',
+                                                color: 'white',
+                                                marginTop: '3px',
+                                                marginRight: '20px',
+                                                marginBottom: '3px',
+                                                display: 'flex'
+                                            }}
+                                                onClick={(e) => openSelectedPostFields(e)}
+                                            >
+                                                edit post
+                                            </Button>
+                                            <Button style={{
+                                                width: '110px',
+                                                height: '40px',
+                                                backgroundColor: 'rgb(222, 38, 38)',
+                                                color: 'white',
+                                                marginRight: '20px',
+                                                marginTop: '3px',
+                                                marginBottom: '3px'
+
+                                            }}
+                                                onClick={(e) => handleDeletePost()}
+                                            >delete post</Button>
+                                            <Button style={{
+                                                width: '110px',
+                                                height: '40px',
+                                                backgroundColor: 'green',
+                                                color: 'white',
+                                                marginRight: '20px',
+                                                marginTop: '3px',
+                                                marginBottom: '3px',
+                                                fontSize: '13px'
+
+                                            }}
+                                                onClick={(e) => setPostAsTaken()}
+                                            >set as taken</Button>
+
+                                        </div>
+                                    </CardContent>
+
+
+                                </div>
+                                <div style={{ float: 'right', width: '50%', marginTop: '20px' }}>
+                                    {
+                                        (images.length > 0) ? (
+                                            <div >
+                                                <SimpleImageSlider
+                                                    width={400}
+                                                    height='40%'
+                                                    images={images}
+                                                    showBullets={true}
+                                                    showNavs={true}
+                                                    autoPlay='on'
+
+                                                />
+                                            </div>
+                                        ) : (<></>)
+                                    }
+                                </div>
                             </div>
+
                         ) : (<></>)
                     }
                 </div>
 
 
-            </CssBaseline>
+            </CssBaseline >
 
         )
 
 
 }
-function handleScroll(selectedPost, titleRef) {
 
-    titleRef.current.scrollIntoView({ behavior: "smooth" });
-}
 function showUser(username) {
     const logout = () => {
         sessionStorage.clear();
-   //     window.location.reload();
+        //     window.location.reload();
     }
     return (
 

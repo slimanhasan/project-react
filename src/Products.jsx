@@ -25,7 +25,6 @@ import { EmailRounded } from "@material-ui/icons";
 import { InputBase } from "@material-ui/core";
 const API_URL = "http://localhost:8080/getItems/";
 
-const images = [];
 const cities=['all','damascus','homs','aleppo','hama'];
 export default function () {
   let url = window.location.href;
@@ -111,7 +110,7 @@ export default function () {
               </Link>
               <Link to="/categories" >
                 <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}>
-                  <h4 style={{ color: 'white' }}>donations</h4>
+                  <h4 style={{ color: 'white' }}>categories</h4>
                 </Button>
               </Link>
               <Link to={(token) ? '/createPost' : '/login'}>

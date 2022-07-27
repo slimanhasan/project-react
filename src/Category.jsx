@@ -71,11 +71,7 @@ export default function Category() {
                 <h4 style={{ color: 'white' }}>home</h4>
               </Button>
             </Link>
-            <Link to="/categories" >
-              <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}>
-                <h4 style={{ color: 'white' }}>donations</h4>
-              </Button>
-            </Link>
+            
             <Link to={(token) ? '/createPost' : '/login'}>
               <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}>
                 <h4 style={{ color: 'white' }}>donate now</h4>

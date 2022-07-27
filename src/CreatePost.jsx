@@ -16,7 +16,7 @@ export default function () {
     const { username, setUsername } = useUsername();
     const [fetching, setFetching] = useState(false);
     if (!token) {
-        return (window.location.href = "/login")
+        window.location.href = "/login";
     }
     const { status, data, error, isFetching } = useQuery("getCategories", async () => {
         const { data } = await axios.get(
@@ -170,7 +170,7 @@ export default function () {
                             </Link>
                             <Link to="/categories" >
                                 <Button color="inherit" className='buttton' style={{ border: '1px solid rgb(200,200,200)', marginRight: '10px' }}>
-                                    <h4 style={{ color: 'white' }}>donations</h4>
+                                    <h4 style={{ color: 'white' }}>categories</h4>
                                 </Button>
                             </Link>
                             {

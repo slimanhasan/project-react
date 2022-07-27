@@ -13,6 +13,8 @@ import {QueryClientProvider,QueryClient} from 'react-query'
 import Temp from './temp';
 import MyDonations from './myDonations';
 import PersonalPage from './personalPage';
+import Home from './home';
+import ViewProfile from './viewProfile';
 function setToken(userToken,username){
     sessionStorage.setItem('token', JSON.stringify(userToken));
     sessionStorage.setItem('username', JSON.stringify(username));
@@ -28,13 +30,20 @@ function App() {
             <Routes>
               <Route path='/createPost' element={<CreatePost/>}></Route>
               <Route path="/login" element={<Login setToken={setToken}/>} />
-              <Route path="/" element={ <Category/> } />
+              <Route path="/categories" element={ <Category/> } />
               <Route path="/Category/:name" element={ <Products/> } />
               <Route path="Details" element={ <Details/> } />
               <Route path='/register' element={<Register setToken={setToken}/>}/>
               <Route path="/Temp" element={<Temp/>}></Route>
               <Route path="/myDonations" element={<MyDonations/>}></Route>
               <Route path="/personalPage" element={<PersonalPage/>}></Route>
+              <Route path={"/"} element={<Home/>}></Route>
+              <Route path={"/home"} element={<Home/>}></Route>
+              
+              <Route path="/viewProfile" element={<ViewProfile/>}></Route>
+             
+
+
             </Routes>
         </BrowserRouter>
       </QueryClientProvider>
